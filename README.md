@@ -22,11 +22,11 @@ Python depends on SQLite and libffi, forming a small but realistic dependency gr
 
 ```text
 belle2-eval/
-├── sources/     # unpacked source trees
-├── install/     # installation prefix
+├── sources/     # unpacked source trees   
 ├── Makefile     # build orchestration
 ├── env.sh       # environment setup
-└── README.md
+├── README.md
+└──.gitignore
 ```
 
 ---
