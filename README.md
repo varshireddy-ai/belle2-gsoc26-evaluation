@@ -13,38 +13,146 @@ It builds and installs a minimal dependency stack consisting of:
 - libffi
 - SQLite
 - Python
+This represents a small but realistic dependency graph, since Python depends on SQLite and libffi.
 
-All packages are built from source and installed into a private prefix
-directory. No system libraries are used at runtime.
+---
 
-## Directory layout
+## Repository structure
 
 
 belle2-eval/
 ├── sources/ # unpacked source trees
-├── build/ # (optional) build directory
 ├── install/ # installation prefix
-├── Makefile
-├── env.sh
+├── Makefile # build orchestration
+├── env.sh # environment setup
 └── README.md
+
+
+All software is installed into a single private prefix directory.
+
+---
+
+## Build approach
+
+A single installation prefix is used for all packages:
+
+
+$HOME/belle2-eval/install
+
+
+Each package is configured with:
+
+
+--prefix=$(PREFIX)
+
+
+GNU Make is used only to encode the dependency order and orchestrate the builds.
+The native build systems of each package are used internally.
+
+The dependency order is:
+
+- xz
+- libffi
+- sqlite
+- python
+
+Python is built last because it links against SQLite and libffi.
+
+---
+
+## Forcing the use of local dependencies
+
+During the Python build, the following variables are set:
+
+- CPPFLAGS=-I$(PREFIX)/include
+- LDFLAGS=-L$(PREFIX)/lib
+- PKG_CONFIG_PATH=$(PREFIX)/lib/pkgconfig
+
+This ensures that Python is built against the locally installed libraries in the prefix and not against system libraries.
+
+---
+
+## How to build
+
+From the repository root:
+
+
+make
+
+
+---
+
+## Environment setup
+
+After the build:
+
+
+source env.sh
+
+
+This activates the locally built stack by setting PATH, LD_LIBRARY_PATH and PKG_CONFIG_PATH.
+
+---
+
+## Functional test
+
+
+python3 -c "import sqlite3; print(sqlite3.sqlite_version)"
+
+
+---
+
+## Verifying that system libraries are not used
+
+Check that the Python SQLite module uses the local SQLite library:
+
+
+ldd $PREFIX/lib/python3./lib-dynload/_sqlite3.so | grep sqlite
+
+
+Check that the ctypes module uses the local libffi:
+
+
+ldd $PREFIX/lib/python3./lib-dynload/_ctypes.so | grep ffi
+
+
+The printed paths must point inside the installation prefix:
+
+
+$PREFIX
+
+
+---
+
+## Clean rebuild
+
+
+make clean
+make
 
 
 ---
 
 ## Changing the installation prefix
 
-The installation prefix is controlled by the variable `PREFIX`.
-
-By default it is set to:
+The installation prefix can be changed when running make:
 
 
-$HOME/belle2-eval/install
-
-
-You can change it either by editing `env.sh` and the Makefile, or directly
-when invoking make:
-
-```bash
 make PREFIX=/your/custom/path
 
+
+The same prefix must also be set in env.sh when using a custom location.
+
+---
+
+## Relation to the Belle II project
+
+This prototype demonstrates the core principles required for a sustainable externals build workflow for the Belle II software:
+
+- explicit dependency ordering
+- strict prefix-based installation
+- isolation from system libraries
+- reproducible and automatable builds
+
+The same approach can be extended to larger dependency sets and to multi-architecture enviro
 
