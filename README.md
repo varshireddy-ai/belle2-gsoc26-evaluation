@@ -100,7 +100,10 @@ This activates the locally built stack by setting `PATH`,
 `LD_LIBRARY_PATH` and `PKG_CONFIG_PATH`.
 
 ---
-
+## Check python:
+```
+which python3
+```
 ## Functional test
 
 ```bash
