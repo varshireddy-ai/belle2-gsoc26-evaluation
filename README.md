@@ -18,5 +18,4 @@ All artifacts are installed into a single prefix directory.
 
 ---
 
-## Directory layout
 
