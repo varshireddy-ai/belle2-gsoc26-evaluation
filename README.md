@@ -1,24 +1,22 @@
-Belle II evaluation task – prefix-based dependency stack
+# Prefix-based build system – Belle II GSoC 2026 evaluation
 
-This repository builds a small isolated software stack using GNU Make.
+This repository contains a small, clean, prefix-based build setup created as part of the
+Belle II GSoC 2026 evaluation task.
 
-Packages:
-- xz
+The goal of this project is to demonstrate how third-party dependencies and Python can be
+built and isolated inside a user-controlled installation prefix, without relying on
+system packages.
+
+The build produces a self-contained environment that includes:
+
+- liblzma
+- sqlite3
 - libffi
-- sqlite
-- Python
+- Python (built against the above libraries)
 
-All packages are installed into a private prefix.
+All artifacts are installed into a single prefix directory.
 
-Build instructions
-------------------
-make all
+---
 
-Environment setup
------------------
-source env.sh
+## Directory layout
 
-Test
-----
-which python3
-python3 -c "import sqlite3"
