@@ -145,7 +145,7 @@ make
 You can override the prefix when running make:
 
 ```bash
-make PREFIX=make PREFIX=make PREFIX=$HOME/belle2-custom
+make PREFIX=$HOME/belle2-custom
 ```
 
 The same prefix must also be updated in `env.sh`.
