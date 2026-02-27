@@ -73,7 +73,11 @@ This ensures that Python is built against the locally installed libraries
 and not against system libraries.
 
 ---
-
+## Go to the repository root
+```bash
+cd belle2-eval
+```
+---
 ## How to build
 
 From the repository root:
@@ -141,7 +145,7 @@ make
 You can override the prefix when running make:
 
 ```bash
-make PREFIX=/your/custom/path
+make PREFIX=make PREFIX=make PREFIX=$HOME/belle2-custom
 ```
 
 The same prefix must also be updated in `env.sh`.
