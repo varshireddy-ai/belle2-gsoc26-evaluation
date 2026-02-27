@@ -7,15 +7,44 @@ The goal of this project is to demonstrate how third-party dependencies and Pyth
 built and isolated inside a user-controlled installation prefix, without relying on
 system packages.
 
-The build produces a self-contained environment that includes:
+It builds and installs a minimal dependency stack consisting of:
 
-- liblzma
-- sqlite3
+- XZ Utils
 - libffi
-- Python (built against the above libraries)
+- SQLite
+- Python
 
-All artifacts are installed into a single prefix directory.
+All packages are built from source and installed into a private prefix
+directory. No system libraries are used at runtime.
+
+## Directory layout
+
+
+belle2-eval/
+├── sources/ # unpacked source trees
+├── build/ # (optional) build directory
+├── install/ # installation prefix
+├── Makefile
+├── env.sh
+└── README.md
+
 
 ---
+
+## Changing the installation prefix
+
+The installation prefix is controlled by the variable `PREFIX`.
+
+By default it is set to:
+
+
+$HOME/belle2-eval/install
+
+
+You can change it either by editing `env.sh` and the Makefile, or directly
+when invoking make:
+
+```bash
+make PREFIX=/your/custom/path
 
 
